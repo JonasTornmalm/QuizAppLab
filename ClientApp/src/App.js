@@ -7,8 +7,10 @@ import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
+import { Quiz } from './components/Quiz';
 
 import './custom.css'
+
 
 export default class App extends Component {
   static displayName = App.name;
@@ -18,7 +20,8 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
-        <AuthorizeRoute path='/fetch-data' component={FetchData} />
+            <AuthorizeRoute path='/fetch-data' component={FetchData} />
+            <AuthorizeRoute path='/quiz' component={Quiz} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
     );

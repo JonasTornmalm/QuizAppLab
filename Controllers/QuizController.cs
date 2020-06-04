@@ -26,7 +26,7 @@ namespace QuizAppLab.Controllers
         // GET: api/<QuizController>
         [HttpGet]
         [Route("/questions")]
-        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
+        public async Task<ActionResult<IEnumerable<Question>>> GetAllQuestions()
         {
             return await _context.Questions.ToListAsync();
         }

@@ -18,6 +18,8 @@ namespace QuizAppLab
         {
             HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUri);
             var contentJsonString = await httpResponse.Content.ReadAsStringAsync();
+            contentJsonString = contentJsonString.Replace("&#039;", "");
+            contentJsonString = contentJsonString.Replace("&quot;", "");
             return contentJsonString;
         }
 
@@ -55,7 +57,7 @@ namespace QuizAppLab
                             IsCorrect = false
                         });
                     }
-
+                    questionToDb.Answers.AddRange(answersToDb);
                     context.Questions.Add(questionToDb);
                     context.Answers.AddRange(answersToDb);
                 }
