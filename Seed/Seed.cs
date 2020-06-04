@@ -23,41 +23,44 @@ namespace QuizAppLab
 
         public static void SeedDB(ApplicationDbContext context)
         {
-            var quizItems = JsonConvert.DeserializeObject<SeedResponse>(GetJsonToString().Result).GeneratedQuizList;
-
-            foreach (var item in quizItems)
+            if (!context.Questions.Any())
             {
-                var questionToDb = new Question();
-                var answersToDb = new List<Answer>();
+                var quizItems = JsonConvert.DeserializeObject<SeedResponse>(GetJsonToString().Result).GeneratedQuizList;
 
-                questionToDb.Id = Guid.NewGuid();
-                questionToDb.QuestionText = item.QuestionText;
-
-                // Correct Answer
-                answersToDb.Add(new Answer
+                foreach (var item in quizItems)
                 {
-                    Id = Guid.NewGuid(),
-                    QuestionId = questionToDb.Id,
-                    AnswerText = item.CorrectAnswer,
-                    IsCorrect = true
-                });
+                    var questionToDb = new Question();
+                    var answersToDb = new List<Answer>();
 
-                // Incorrect Answers
-                foreach (var incorrectAnswer in item.IncorrectAnswers)
-                {
+                    questionToDb.Id = Guid.NewGuid();
+                    questionToDb.QuestionText = item.QuestionText;
+
+                    // Correct Answer
                     answersToDb.Add(new Answer
                     {
                         Id = Guid.NewGuid(),
                         QuestionId = questionToDb.Id,
-                        AnswerText = incorrectAnswer,
-                        IsCorrect = false
+                        AnswerText = item.CorrectAnswer,
+                        IsCorrect = true
                     });
-                }
 
-                context.Questions.Add(questionToDb);
-                context.Answers.AddRange(answersToDb);
+                    // Incorrect Answers
+                    foreach (var incorrectAnswer in item.IncorrectAnswers)
+                    {
+                        answersToDb.Add(new Answer
+                        {
+                            Id = Guid.NewGuid(),
+                            QuestionId = questionToDb.Id,
+                            AnswerText = incorrectAnswer,
+                            IsCorrect = false
+                        });
+                    }
+
+                    context.Questions.Add(questionToDb);
+                    context.Answers.AddRange(answersToDb);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
         }
     }
 }
