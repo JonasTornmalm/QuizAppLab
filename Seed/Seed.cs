@@ -57,7 +57,6 @@ namespace QuizAppLab
                             IsCorrect = false
                         });
                     }
-                    questionToDb.Answers.AddRange(answersToDb);
                     context.Questions.Add(questionToDb);
                     context.Answers.AddRange(answersToDb);
                 }

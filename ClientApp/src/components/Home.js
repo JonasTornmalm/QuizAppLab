@@ -7,10 +7,10 @@ export class Home extends Component {
 
     render() {
         return (
-            <div className="d-flex flex-column justify-content-center">
+            <div>
                 <h1>Welcome to my quiz app!</h1>
                 <div>
-                    <Link to={"/Quiz"} className="align-self-center w-50 mt-3 btn btn-info">Play Game</Link>
+                    <Link to={"/Quiz"} className="w-50 mt-3 btn btn-info">Play Game</Link>
                 </div>
             </div>
         );

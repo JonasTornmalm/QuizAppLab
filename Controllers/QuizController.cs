@@ -25,10 +25,30 @@ namespace QuizAppLab.Controllers
 
         // GET: api/<QuizController>
         [HttpGet]
-        [Route("/questions")]
+        [Route("/allquestions")]
         public async Task<ActionResult<IEnumerable<Question>>> GetAllQuestions()
         {
             return await _context.Questions.ToListAsync();
+        }
+
+        // GET: api/<QuizController>
+        [HttpGet]
+        [Route("/questions")]
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
+        {
+            try
+            {
+                var quizItems = await _context.Questions.Take(5).ToListAsync();
+                foreach (var question in quizItems)
+                {
+                    question.Answers = _context.Answers.Where(a => a.QuestionId == question.Id).ToList();
+                }
+                return Ok(quizItems);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // GET api/<QuizController>/5

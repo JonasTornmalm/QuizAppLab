@@ -6,14 +6,21 @@ export class Quiz extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { questions: [], loading: true };
+        this.state = {
+            questions: [],
+            questionIndex: 0,
+            loading: true
+        };
+
+
+        this.getAllQuestions = this.getQuestions.bind(this);
     }
 
     componentDidMount() {
-        this.getAllQuestions();
+        this.getQuestions();
     }
 
-    static renderQuestionsTable(questions) {
+    static renderQuestionsTable(question) {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
                 <thead>
@@ -22,9 +29,12 @@ export class Quiz extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {questions.map(question =>
-                        <tr key={questions}>
-                            <td>{question.questionText}</td>
+                    <tr>
+                        <td>{question.questionText}</td>
+                    </tr>
+                    {question.answers.map(answer =>
+                        <tr key={answer.id}>
+                            <td>{answer.answerText}</td>
                         </tr>
                     )}
                 </tbody>
@@ -35,18 +45,18 @@ export class Quiz extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Quiz.renderQuestionsTable(this.state.questions);
+            : Quiz.renderQuestionsTable(this.state.questions[this.state.questionIndex]);
 
         return (
             <div>
-                <h1 id="tabelLabel" >Questions</h1>
+                <h1 id="tabelLabel">Questions</h1>
                 <p>This component demonstrates fetching data from the server.</p>
                 {contents}
             </div>
         );
     }
 
-    async getAllQuestions() {
+    async getQuestions() {
         const token = await authService.getAccessToken();
         const response = await fetch('questions', {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
