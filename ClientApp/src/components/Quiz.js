@@ -125,12 +125,20 @@ export class Quiz extends Component {
             this.setState({
                 completed: true
             })
-            this.saveScore();
+            if (this.state.currentScore > 0) {
+                this.saveScore();
+            }
+            else {
+                this.setState({
+                    scoreSaved: true
+                })
+            }
+            
         }
     }
 
     async handleClick(answer) {
-        if (this.state.answered) {
+        if (this.state.hasAnswered) {
             return;
         }
         const token = await authService.getAccessToken();
@@ -141,7 +149,6 @@ export class Quiz extends Component {
         })
             .then(response => response.json())
             .then((jsonresponse) => { return jsonresponse });
-        console.log(answerResponse);
 
         if (answerResponse.isCorrect) {
             listButton.classList.replace('btn-primary', 'btn-success');
@@ -155,7 +162,7 @@ export class Quiz extends Component {
     }
 
     async saveScore() {
-        console.log('hello save score');
+        console.log(this.state.currentScore);
         const token = await authService.getAccessToken();
 
         if (token != null) {
@@ -168,10 +175,10 @@ export class Quiz extends Component {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    currentScore: this.state.currentScore
+                    score: this.state.currentScore
                 })
             };
-
+            console.log(options.body);
             await fetch('savescore', options)
                 .then((response) => {
                     if (response.ok) {

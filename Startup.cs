@@ -40,6 +40,8 @@ namespace QuizAppLab
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.AddHttpContextAccessor();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 

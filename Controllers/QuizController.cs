@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizAppLab.Data;
 using QuizAppLab.Models;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,10 +23,12 @@ namespace QuizAppLab.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public QuizController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public QuizController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: api/<QuizController>
@@ -80,21 +84,19 @@ namespace QuizAppLab.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         [Route("/savescore")]
         public async Task<IActionResult> PostSaveScore([FromBody] ScoreModel score)
         {
             try
             {
-                var currentUser = await _userManager.GetUserAsync(User);
-                if (score.Score == 0)
-                {
-                    return Ok(new { Success = true, StatusCode = 200, Message = "That's a terrible score, we're not going to save that..." });
-                }
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var currentUser = _context.ApplicationUsers.Single(u => u.Id == userId);
+                var userName = currentUser.UserName;
+
                 var scoreToDb = new Score
                 {
                     Id = Guid.NewGuid(),
-                    UserName = currentUser.UserName,
+                    UserName = userName,
                     Result = score.Score,
                     Date = DateTime.Now
                 };
