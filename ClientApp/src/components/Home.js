@@ -7,10 +7,12 @@ export class Home extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Welcome to my quiz app!</h1>
+            <div className="centerNicely">
                 <div>
-                    <Link to={"/Quiz"} className="w-50 mt-3 btn btn-info">Play Game</Link>
+                    <h1>Welcome to my quiz app!</h1>
+                    <div>
+                        <Link to={"/Quiz"} className="w-50 mt-3 btn btn-info">Play Game</Link>
+                    </div>
                 </div>
             </div>
         );

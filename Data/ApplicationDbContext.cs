@@ -20,5 +20,6 @@ namespace QuizAppLab.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<Score> Scores { get; set; }
     }
 }
