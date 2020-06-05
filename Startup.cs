@@ -26,11 +26,12 @@ namespace QuizAppLab
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -63,6 +64,13 @@ namespace QuizAppLab
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors(configurePolicy =>
+            {
+                configurePolicy.AllowAnyHeader();
+                configurePolicy.AllowAnyMethod();
+                configurePolicy.AllowCredentials();
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

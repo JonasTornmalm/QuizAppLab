@@ -41,7 +41,7 @@ namespace QuizAppLab.Controllers
                 var quizItems = await _context.Questions.Take(5).ToListAsync();
                 foreach (var question in quizItems)
                 {
-                    question.Answers = _context.Answers.Where(a => a.QuestionId == question.Id).ToList();
+                    question.Answers = _context.Answers.Where(a => a.QuestionId == question.Id).OrderBy(x => Guid.NewGuid()).ToList();
                 }
                 return Ok(quizItems);
             }
@@ -49,6 +49,27 @@ namespace QuizAppLab.Controllers
             {
                 return BadRequest();
             }
+        }
+
+
+        [HttpGet]
+        [Route("/answers/{id}")]
+        [IgnoreAntiforgeryToken]
+        public IActionResult GetCorrectAnswer(string id)
+        {
+            try
+            {
+                var result = _context.Answers.ToList().Single(a => a.Id.ToString() == id);
+                if (result.IsCorrect)
+                    return Ok(new { IsCorrect = result.IsCorrect, CorrectAnswer = result.Id });
+
+                return Ok(new { IsCorrect = result.IsCorrect, CorrectAnswer = _context.Answers.Single(a => a.QuestionId == result.QuestionId && a.IsCorrect).Id });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, StatusCode = 400, Error = "Bad Request", Message = ex.Message });
+            }
+
         }
 
         // GET api/<QuizController>/5
