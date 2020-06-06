@@ -41,6 +41,9 @@ export class HighScore extends Component {
                         </tbody>
                     </table>
                 </div>
+                <div>
+                    <Link to={"/"} className="w-50 mt-3 btn btn-success">Back to menu</Link>
+                </div>
             </div>
         );
     }
