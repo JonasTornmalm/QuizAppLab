@@ -109,6 +109,22 @@ namespace QuizAppLab.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet]
+        [Route("/highscores")]
+        public async Task<ActionResult<List<Score>>> GetQuizHighscore()
+        {
+            try
+            {
+                var highscoreList = await _context.Scores.OrderByDescending(r => r.Result).ThenByDescending(d => d.Date).ToListAsync();
+
+                return Ok(highscoreList);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { Message = "Aj aj bad bad" });
+            }
+        }
     }
     public class ScoreModel
     {

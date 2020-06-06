@@ -17,3 +17,37 @@ code {
     text-align: center;
     margin-top: 100px;
 }
+
+#title {
+    text-align: center;
+    font-family: arial, sans-serif;
+}
+
+#highscores {
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+}
+
+#highscores td, #highscores th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#highscores tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#highscores tr:hover {
+    background-color: #ddd;
+}
+
+#highscores th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+}

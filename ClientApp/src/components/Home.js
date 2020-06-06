@@ -11,6 +11,9 @@ export class Home extends Component {
                 <div>
                     <h1>Welcome to my quiz app!</h1>
                     <div>
+                        <Link to={"/HighScore"} className="w-50 mt-3 btn btn-warning">Highscores</Link>
+                    </div>
+                    <div>
                         <Link to={"/Quiz"} className="w-50 mt-3 btn btn-info">Play Game</Link>
                     </div>
                 </div>
