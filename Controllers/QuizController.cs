@@ -79,7 +79,7 @@ namespace QuizAppLab.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, StatusCode = 400, Error = "Bad Request", Message = ex.Message });
+                return BadRequest();
             }
         }
 
@@ -122,7 +122,7 @@ namespace QuizAppLab.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(new { Message = "Aj aj bad bad" });
+                return BadRequest();
             }
         }
     }
